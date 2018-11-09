@@ -54,3 +54,24 @@ sandboxing - e.g. `%no-network` to forbid network access or `%no-new` that prohi
 
 For more information about parse directives please see the
 [documentation](https://docs.qore.org/current/lang/html/parse_directives.html).
+
+# Comments
+
+Comments are not really parse directives per se but it is related to parsing and it's good to mention this early. Qore
+programming language supports both line and block comments and you can see both in the following examples:
+
+```
+# This is a line comment.
+
+printf("Hello world!");    # this will print "Hello world!"
+```
+
+```
+/*
+
+This is a block comment and the following command will not get executed:
+
+printf("Hello world!");
+
+*/
+```

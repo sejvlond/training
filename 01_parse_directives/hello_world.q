@@ -1,3 +1,5 @@
+#!/usr/bin/env qore
+
 %new-style
 %strict-args
 %require-types
