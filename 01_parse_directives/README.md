@@ -2,7 +2,7 @@
 
 Qore programming language supports parse directives in order to set parsing options, load modules, control warnings, and
 include other files. They are supposed to be placed at the top of every Qore file as you can see in
-the [example script](hello_world.q).
+the example [hello_world.q](hello_world.q) script.
 
 ## Recommended parse directives
 
