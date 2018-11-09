@@ -20,16 +20,17 @@ https://docs.qore.org/current/lang/html/index.html
 <!--
 0. [Qore CLI](00_qore_cli)
 -->
-1. [Variables and data types](01_variables_data_types)
-2. [Flow control](02_flow_control)
-3. [Data structures](03_data_structures)
-4. [Input/output](04_input_output)
-5. [Classes](05_classes)
-6. [Modules](06_modules)
+1. [Parse directives](01_parse_directives)
+2. [Variables and data types](02_variables_data_types)
+3. [Flow control](03_flow_control)
+4. [Data structures](04_data_structures)
+5. [Input/output](05_input_output)
+6. [Classes](06_classes)
+7. [Modules](07_modules)
+8. [Exceptions](08_exceptions)
 
 <!--
-7. [Glossary](07_glossary)
+9. [Glossary](09_glossary)
 
 
-X. parse directives?
 -->
