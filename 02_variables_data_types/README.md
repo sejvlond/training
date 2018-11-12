@@ -96,21 +96,101 @@ There are some catches though, be aware of them:
 
 - `NOTHING` and `NULL` are not equivalent and can't generally be converted one to the other
 
-## "Soft" types
+## *Soft* types
 
-## "Star" types
+Along with the basic types mentioned above the Qore programming language also provides their *soft* variants:
+`softbool`, `softint`, `softfloat`, `softstring` (and also  `softnumber` and `softdate`). The difference between a type
+and its *soft* alternative is that the latter accepts also values of other supported types and tries to convert it
+automatically.
 
+A few examples:
+
+- we can assign an integer to a softstring without an explicit conversion
+    ```
+    int a = 42;
+    softstring b = a;        # b contains "42" now
+    ```
+
+- float to softint (the decimal part is still lost)
+    ```
+    float a = 3.14;
+    softint b = a;           # b containst 3 now (decimal part lost)
+    ```
+
+- a string can be assigned to softint too with the came behavior as explained above
+    ```
+    string a = "42a";
+    softint b = a;           # b containst 42
+    ```
+
+- at the same time if the conversion is not possible, we get the default value again
+    ```
+    string a = "Hello!";
+    softint b = a;           # b containst 0
+    ```
+
+It's good to know about those types and how they work but always be aware of the possible surprises.
+
+## `auto`
+
+A variable can also be declared as `auto`. Then the variable accepts all types and returns the same value.
+
+- for example:
+    ```
+    auto a = "Hello!";      # Now a contains a string
+    ```
+
+In general it's usually better to use specific data types though.
+
+
+## *Star* types
+
+The basic data types can also be defined with a star (`*int`, `*string`, `*float`, etc.) which means that the variable
+can contain a value of the specified data type or `NOTHING`.
+
+- this assignment will throw an error
+    ```
+    int a = NOTHING;
+    ```
+
+- however this is correct
+    ```
+    *int a = NOTHING;
+    ```
+
+- as well as this
+    ```
+    *int a = 42;
+    ```
 
 More information about basic data types can be found in
 the [documentation](https://docs.qore.org/current/lang/html/basic_data_types.html).
 
 # Variables
 
-## Local variables
+The Qore programming language supports both local and global variables. With `%new-style` parse directive, variables are
+assumed to be local unless explicitly specified as global using a keyword `our`.
 
-## Global variables
+- Example:
+    ```
+    # this is a global variable
+    our int a;
 
-## Special variables
+    sub greet_world() {
+        # this is a local variable
+        string greeting = "Hello world!";
+        printf(greeting);
+    }
 
+    ```
 
+Local variables are also recommended in most cases since they lead to a cleaner design and are more effective.
 
+## Lexical scopes
+
+Local variables are local to a scope in which they are declared as illustrated in the examples
+[variables_local_global.q](variables_local_global.q) and [variables_scope.q](variables_scope.q).
+
+**Warning:** Please note that the second script will generate warnings (since we're using the `%enable-all-warnings`
+parse directive) and it is not a good practice to declare variables with the same name in different lexical scopes as it
+can be very confusing. This example script only does it to illustrate how block lexical scopes work.
