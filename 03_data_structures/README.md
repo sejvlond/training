@@ -1,6 +1,6 @@
 # Data structures
 
-## List
+## Lists
 
 List is an advanced data type Qore uses for storing multiple values with a defined order.
 
@@ -166,6 +166,12 @@ A `*list` can also have value type declared - for example:
 *list<int> numbers;
 ```
 
-## Hash
+## Hashes
 
-<!-- TODO: mention softlist, *list and *hash-->
+Hashes are containers (associative arrays similar to Maps in Java or dictionaries in Python) that assigns values to
+a string key and also preserve key order for consistent data serialization/deserialization (so they are actually more
+like ordered dictionaries in Python).
+
+
+
+<!-- TODO: mention *hash-->

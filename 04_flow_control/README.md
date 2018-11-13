@@ -120,6 +120,15 @@ switch (42) {
 In the first one the case-statement is not evaluated to True because it compares a string to an integer, while in
 the second example the case-statement is evaluated to True because an implicit type conversion is performed with `==`.
 
+These operators can be used in a `case` statement:
+- `>`
+- `>=`
+- `<`
+- `<=`
+- `==`
+- `=~`
+- `!~`
+
 ## `while` loop
 
 ## `for` loop
