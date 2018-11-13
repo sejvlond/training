@@ -22,8 +22,8 @@ https://docs.qore.org/current/lang/html/index.html
 -->
 1. [Parse directives and comments](01_parse_directives)
 2. [Variables and data types](02_variables_data_types)
-3. [Flow control](03_flow_control)
-4. [Data structures](04_data_structures)
+4. [Data structures](03_data_structures)
+3. [Flow control](04_flow_control)
 5. [Input/output](05_input_output)
 6. [Classes](06_classes)
 7. [Modules](07_modules)
@@ -34,3 +34,4 @@ https://docs.qore.org/current/lang/html/index.html
 
 
 -->
+
