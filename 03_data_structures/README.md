@@ -6,6 +6,7 @@ List is an advanced data type Qore uses for storing multiple values with a defin
 
 ```
 list empty = ();
+list also_empty = list();
 list words = ("lorem", "ipsum", "dolor", "sit", "amet");
 list numbers = (42, 3.14, "seven", (1, 2, 3));
 ```
@@ -18,6 +19,18 @@ contain other lists. Qore programming language supports also typed lists however
 Elements in a list can be accessed using square brackets operator (`[]`) like this:
 ```
 printf("Second word: %s\n", words[1]);     # indices start with zero
+```
+
+**Warning:** Please be aware that if you try and access an element using an index that doesn't exist in the list (i.e.
+is out of its bounds), you will not get an error but `NOTHING` will be returned instead.
+
+```
+list words = ("lorem", "ipsum");
+
+*string a = words[0];      # a contains "lorem" now
+a = words[1];              # a contains "ipsum" now
+a = words[2];              # no error, a contains NOTHING now
+a = words[256];            # no error, a contains NOTHING now
 ```
 
 Other useful list operators are these:
@@ -169,9 +182,212 @@ A `*list` can also have value type declared - for example:
 ## Hashes
 
 Hashes are containers (associative arrays similar to Maps in Java or dictionaries in Python) that assigns values to
-a string key and also preserve key order for consistent data serialization/deserialization (so they are actually more
-like ordered dictionaries in Python).
+a key and also preserve key order for consistent data serialization/deserialization (so they are actually more like
+ordered dictionaries in Python). Currently only strings are used as keys but you can use other data types as well if
+they can be implicitly converted to strings and stored as strings inside the hash. The same conversion is applied when
+accessing value associated with a key. The values in general don't need to be of the same type.
 
+```
+hash h = {
+    "apple": 2,
+    "pear": 3,
+    "orange": 2,
+    "lemon": "none",
+};
 
+hash empty = {};
 
-<!-- TODO: mention *hash-->
+hash also_empty = hash();
+```
+
+There are multiple ways to access elements in hash: `h{"apple"}`, `h.apple`, `h.{"app" + "le"}` and `h{a_key}` are all
+equivalent ways to access the value associated with the key "apple" (as long as `a_key` is a variable containing
+"apple").
+
+**Warning:** Similarly to how lists work, an attempt to access a key that doesn't exist in a hash will throw no error
+(as you could expect) and will return `NOTHING` instead.
+
+Other useful hash operators are:
+
+- `keys` returns a list representing the keys in a hash
+    ```
+    hash h = {
+        "apple": 2,
+        "pear": 3,
+        "orange": 2,
+        "lemon": "none",
+    };
+
+    list k = keys h;        # k now contains ("apple", "pear", "orange", "lemon")
+    ```
+- `+` concatenates hashes
+    ```
+    hash h1 = {
+        "a": "b",
+        "b": "c"
+    };
+
+    hash h2 = {
+        "b": "d",
+        "e": 42
+    };
+
+    hash h = h1 + h2;
+
+    # h now contains
+    # {
+    #     "a": "b",
+    #     "b": "d",
+    #     "e": 42
+    # }
+    ```
+- `-` deletes key(s) from the hash (more precisely it creates a new copy of the hash without the key(s) and returns
+  the new hash without modifying the original one)
+    ```
+    hash h = {
+        "apple": 2,
+        "pear": 3,
+        "orange": 2,
+        "lemon": "none",
+    };
+
+    # if there is a string key on the right side, that key is removed
+    hash x = h - "apple";
+
+    # x now contains
+    # {
+    #     "pear": 3,
+    #     "orange": 2,
+    #     "lemon": "none"
+    # }
+    #
+    # h stays unmodified
+
+    # if there is a list of keys on the right sides, all of them are removed
+    hash y = h - ("apple", "pear", "lemon");
+
+    # y now contains {"orange": 2}
+
+    # it's of course possible to modify the original hash like this:
+    h = h - ("apple", "lemon", "orange");
+
+    # h now contains {"pear": 3}
+
+    # an attempt to remove a key that isn't in the hash will return the same hash and no error is thrown
+    h = h - "there_is_no_hash_like_this";
+
+    # h still contains {"pear": 3}
+    ```
+
+- `+=` and `-=` work as you would probably expect:
+    ```
+    some_hash += another_hash;
+
+    # is equivalent to
+
+    some_hash = some_hash + another_hash;
+    ```
+
+    ```
+    some_hash -= "a_key";
+
+    # is equivalent to
+
+    some_hash = some_hash - "a_key";
+    ```
+
+- slicing will return a new hash containing just the specified keys (and their respective values)
+    ```
+    hash h = {
+        "apple": 2,
+        "pear": 3,
+        "orange": 2,
+        "lemon": "none",
+    };
+
+    hash nh = h.("apple", "pear");
+
+    # nh now contains {"apple": 2, "pear": 3}
+    ```
+
+### Hash with declared value type
+
+The hash type supports two type arguments in angle brackets to specify the key and value data types, however the key
+type can only be string currently.
+
+```
+hash<string, int> h = {"apple": 11};
+
+h += {"pear": 2};      # this is OK, we can add more string: integer key value pairs
+h += {"xyz": 2.1};     # this is not OK, we can't add a float value, it will throw an error
+h += {"abc": "5"};     # this is not OK, we can't add a string value, it will throw an error
+h += {"x": int("5")};  # this is OK, as we're using an explicit conversion
+```
+
+### Type-safe hash (`hashdecl`)
+
+There is also another way to make hashes stricter and more specific. Keyword `hashdecl` allows to specify keys, value
+types and default values.
+
+```
+hashdecl ResponseHash {
+    int code = 200;
+    string msg = "OK";
+}
+```
+
+Now we can create hashes of type `ResponseHash`, the hashes will be automatically populated with given by
+the initialization expressions in the `hashdecl` declaration.
+
+```
+# immediate value with implicit construction: default values are assigned from the declaration
+auto ah1 = hash<ResponseHash>{};
+
+# immediate value with implicit construction: default values are assigned from the declaration
+auto ah2 = <ResponseHash>{};
+
+# immediate value with implicit construction: overrides the initial values
+auto ah3 = <ResponseHash>{"code": 404, "msg": "Not Found"};
+
+# implicit construction: default values are assigned from the declaration
+hash<ResponseHash> h1();
+
+# implicit construction: overrides the initial values
+hash<ResponseHash> h2(("code": 500, "msg": "Internal Server Error"));
+
+# "new" construction: default values are assigned from the declaration
+hash<ResponseHash> h3 = new hash<ResponseHash>();
+
+# "new" construction: overrides the initial values
+hash<ResponseHash> h4 = new hash<ResponseHash>(("code": 301, "msg": "Moved Permanently"));
+```
+
+It's not possible to violate the declared type constrains.
+
+```
+hashdecl ResponseHash {
+    int code = 200;
+    string msg = "OK";
+}
+
+hash<ResponseHash> h1();
+
+h1{"code"} = "400";         # will throw an error; code has to be an integer, not a string
+```
+
+It's not possible to add an unknown key to a type-safe hash.
+
+```
+hashdecl ResponseHash {
+    int code = 200;
+    string msg = "OK";
+}
+
+hash<ResponseHash> h1();
+
+h1{"Content-Encoding"} = "gzip";   # will throw an error; key "Content-Encoding" is not supported
+```
+
+### `*hash`
+
+Similarly to list and basic data types there is also a data type `*hash` which accepts a hash or `NOTHING`.
