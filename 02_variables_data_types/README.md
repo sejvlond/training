@@ -194,3 +194,12 @@ Local variables are local to a scope in which they are declared as illustrated i
 **Warning:** Please note that the second script will generate warnings (since we're using the `%enable-all-warnings`
 parse directive) and it is not a good practice to declare variables with the same name in different lexical scopes as it
 can be very confusing. This example script only does it to illustrate how block lexical scopes work.
+
+---
+
+<table>
+    <tr>
+        <td>[&larr; Go Back to: Parse directives](../01_parse_directives/)</td>
+        <td>[Next: Data structures &rarr;](../03_data_structures)</td>
+    </tr>
+</table>

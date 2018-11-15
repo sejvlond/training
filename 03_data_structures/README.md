@@ -391,3 +391,12 @@ h1{"Content-Encoding"} = "gzip";   # will throw an error; key "Content-Encoding"
 ### `*hash`
 
 Similarly to list and basic data types there is also a data type `*hash` which accepts a hash or `NOTHING`.
+
+---
+
+<table>
+    <tr>
+        <td>[&larr; Go Back to: Variables and data types](../02_variables_data_types/)</td>
+        <td>[Next: Flow control &rarr;](../04_flow_control/)</td>
+    </tr>
+</table>
