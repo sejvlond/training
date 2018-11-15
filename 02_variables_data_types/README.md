@@ -6,25 +6,25 @@ used ones:
 - **Boolean** [[docs]](https://docs.qore.org/current/lang/html/basic_data_types.html#boolean)
     - declared as `bool`
     - `True` or `False` values
-    - by default initialized to `False`
+    - default value: `False`
 - **Integer** [[docs]](https://docs.qore.org/current/lang/html/basic_data_types.html#integer)
     - declared as `int`
     - a 64-bit signed integer
-    - by default initialized to `0`
+    - default value: `0`
 - **Float** [[docs]](https://docs.qore.org/current/lang/html/basic_data_types.html#float)
     - declared as `float`
     - a double precision floating-point number
-    - by default initialized to `0.0`
+    - default value: `0.0`
 - **String** [[docs]](https://docs.qore.org/current/lang/html/basic_data_types.html#string)
     - declared as `string`
     - a sequence of characters
     - characters encoding depends on a special `QORE_CHARSET` environment variable if set or locale (`LANG`
       environment variable); default is `UTF-8` (if neither variable is set)
-    - by default initialized to `""` (empty string)
+    - default value: `""` (empty string)
 - **NOTHING** [[docs]](https://docs.qore.org/current/lang/html/basic_data_types.html#nothing)
     - declared as `NOTHING`
     - represents no value
-    - by default initialized to `NOTHING`
+    - default value: `NOTHING`
 
 There are also a few others mentioned here just for the sake of completness:
 - **Number** - an arbitrary precision number
